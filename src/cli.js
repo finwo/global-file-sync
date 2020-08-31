@@ -67,10 +67,10 @@ if (argv.init) {
 
       // Update & notify user
       if (newData == oldData) {
+        process.stdout.write('Up-to-date : ' + path.basename(filename) + '\n');
+      } else {
         await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
         process.stdout.write('Updated    : ' + path.basename(filename) + '\n');
-      } else {
-        process.stdout.write('Up-to-date : ' + path.basename(filename) + '\n');
       }
 
     }
