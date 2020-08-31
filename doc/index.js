@@ -6,6 +6,6 @@ module.exports = fs
   .map(entry => {
     const stat = fs.statSync(__dirname + path.sep + entry);
     if (!stat.isDirectory()) return null;
-    return require(__dirname + path.sep + path.basename(entry));
+    return require(__dirname+path.sep+'loader')(path.basename(entry));
   })
   .filter(entry => entry);

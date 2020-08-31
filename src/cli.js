@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-const argv = require('minimist')(process.argv.slice(2));
-const fs   = require('fs');
-const path = require('path');
+const argv      = require('minimist')(process.argv.slice(2));
+const fs        = require('fs');
+const path      = require('path');
+const documents = require(path.resolve(__dirname,'..','doc'));
 
 // Recursive scandir
 const scandir = async (dir) => {
@@ -28,8 +29,19 @@ const scandir = async (dir) => {
   return files;
 };
 
+// Handle file init
+if (argv.init) {
+  for(const document of documents) {
+    if (document.name !== argv.init) continue;
+    fs.writeFileSync(document.name, [].concat(document.shebang,document.header,document.content).join('\n'));
+    process.stdout.write(argv.init + ' written\n');
+    process.exit(0);
+  }
+  process.stdout.write('No match found\n');
+  process.exit(1);
+}
+
 (async () => {
-  const documents = require(path.resolve(__dirname,'..','doc'));
   const files     = await scandir(process.cwd());
 
   await Promise.all(files.map(async filename => {
