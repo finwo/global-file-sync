@@ -50,7 +50,7 @@ if (argv.init) {
     for(const document of documents) {
       if (!document.match.length) continue;
 
-      // Check if the file start matches
+      // Check if the file is tracked
       let i;
       for(i=0;i<document.match.length;i++) {
         if (data[i] !== document.match[i]) break;
@@ -59,9 +59,20 @@ if (argv.init) {
         continue;
       }
 
-      // Update the file
+      // Generate new content
       const newData = [].concat(document.shebang, document.header, document.content).join('\n');
-      await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
+
+      // Fetch old data to compare
+      const oldData = fs.readFileSync(filename).toString();
+
+      // Update & notify user
+      if (newData == oldData) {
+        await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
+        process.stdout.write('Updated    : ' + path.basename(filename) + '\n');
+      } else {
+        process.stdout.write('Up-to-date : ' + path.basename(filename) + '\n');
+      }
+
     }
   }));
 })();
