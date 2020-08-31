@@ -1,3 +1,7 @@
 .github/
 tool/
-README.md.*
+README.md.head
+README.md.item
+README.md.tail
+Makefile
+config.ini

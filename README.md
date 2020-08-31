@@ -43,7 +43,8 @@ PR in the repository to create a new registry entry.
 
 ## Global registry
 
-| Name | Hash | Source |
-| ---- | ---- | ------ |
+| Name | ID | Source |
+| --- | --- | --- |
 | .editorconfig | 2d0e4a3f-ac19-430c-bf1b-46c68651ce21 | https://github.com/finwo/global-file-sync/tree/master/doc/2d0e4a3f-ac19-430c-bf1b-46c68651ce21 |
 | .github/FUNDING.yml | f4d2ed80-57b6-46e6-b245-5049428a931d | https://github.com/finwo/global-file-sync/tree/master/doc/f4d2ed80-57b6-46e6-b245-5049428a931d |
+

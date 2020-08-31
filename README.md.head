@@ -1,4 +1,4 @@
-# global-file-sync
+# {{package.name}}
 
 Update common files
 
@@ -9,7 +9,7 @@ This command updates all files synchronized with a uuid in it's store.
 ## Install
 
 ```
-npm install -g global-file-sync
+npm install -g {{package.name}}
 ```
 
 ## Usage
@@ -44,4 +44,4 @@ PR in the repository to create a new registry entry.
 ## Global registry
 
 | Name | ID | Source |
-| ---- | ---- | ------ |
+| --- | --- | --- |
