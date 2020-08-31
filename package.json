@@ -1,0 +1,20 @@
+{
+  "name": "global-file-sync",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postpublish": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]') && npm deprecate \"global-file-sync@<${PACKAGE_VERSION}\" \"Rolling release, please update to ${PACKAGE_VERSION}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finwo/global-file-sync.git"
+  },
+  "author": "Robin Bron <robin@finwo.nl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finwo/global-file-sync/issues"
+  },
+  "homepage": "https://github.com/finwo/global-file-sync#readme"
+}
