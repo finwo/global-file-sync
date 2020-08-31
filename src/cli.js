@@ -44,9 +44,27 @@ if (argv.init) {
 const updateFile = async filename => {
   if (!filename) return;
   const stat = await new Promise((r,c) => fs.stat(filename,(e,d)=>e?c(e):r(d)));
+
+  // Fetch largest document's size
+  let largestDocument = 0;
+  for(const document of documents) {
+    const size = document.content.map(e => e.length).reduce((r,a)=>r+a,0);
+    if (size > largestDocument) largestDocument = size;
+  }
+
+  // Skip if file > document*2 (safety & sanity)
+  if (stat.size > (largestDocument*2)) {
+    return;
+  }
+
+  // Read the file for checking
   const data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
+
+  // Check which document is matching
   for(const document of documents) {
     if (!document.match.length) continue;
+    const fname = filename.replace(process.cwd(), '.');
+    process.stdout.write("\x1b[KChecking   : " + fname + "\r");
 
     // Check if the file is tracked
     let i;
@@ -62,7 +80,6 @@ const updateFile = async filename => {
 
     // Fetch old data to compare
     const oldData = fs.readFileSync(filename).toString();
-    const fname   = filename.replace(process.cwd(), '.');
 
     // Update & notify user
     if (newData == oldData) {
