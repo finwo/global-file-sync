@@ -6,15 +6,14 @@ const path      = require('path');
 const mkdirp    = require('mkdirp');
 const documents = require(path.resolve(__dirname,'..','doc'));
 
-// Recursive scandir
-const scandir = async (dir) => {
-  const files     = [];
+// Calls handler for each file in directory
+const walk = async (dir, handler) => {
   const closedset = [];
-  const openset   = [dir];
+  const openset   = [path.resolve(dir)];
   while(openset.length) {
     let stat;
     let entries;
-    const current = openset.shift();
+    const current = path.resolve(openset.pop());
     if (~closedset.indexOf(current)) continue;
     closedset.push(current);
     try {
@@ -22,22 +21,23 @@ const scandir = async (dir) => {
     } catch(e) {
       continue;
     }
+    if (stat.isSymbolicLink()) {
+      continue;
+    }
     if (!stat.isDirectory()) {
-      files.push(current);
+      await handler(current);
       continue;
     }
     try {
       entries = await new Promise((r,c) => fs.readdir(current, (e,d)=>e?c(e):r(d)));
+      for(const entry of entries) {
+        if ('node_modules' === entry) continue;
+        openset.push(path.resolve(current, entry));
+      }
     } catch(e) {
       continue;
     }
-    for(const entry of entries) {
-      // if ('.' === entry.substr(0,1)) continue;
-      if ('node_modules' === entry) continue;
-      openset.push(path.resolve(current, entry));
-    }
   }
-  return files;
 };
 
 // Handle file init
@@ -70,13 +70,20 @@ const updateFile = async filename => {
   }
 
   // Read the file for checking
-  const data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
+  let data;
+  try {
+    data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
+  } catch(e) {
+    return;
+  }
+
+  // Keep the use in the loop
+  const fname = filename.replace(process.cwd(), '.');
+  process.stdout.write("\x1b[K  Checking   : " + fname + "\r");
 
   // Check which document is matching
   for(const document of documents) {
     if (!document.match.length) continue;
-    const fname = filename.replace(process.cwd(), '.');
-    process.stdout.write("\x1b[KChecking   : " + fname + "\r");
 
     // Check if the file is tracked
     let i;
@@ -95,33 +102,17 @@ const updateFile = async filename => {
 
     // Update & notify user
     if (newData == oldData) {
-      process.stdout.write('Up-to-date : ' + fname + '\n');
+      process.stdout.write('  Up-to-date : ' + fname + '\n');
     } else {
       await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
-      process.stdout.write('Updated    : ' + fname + '\n');
+      process.stdout.write('  Updated    : ' + fname + '\n');
     }
 
   }
 };
 
 (async () => {
-  const files   = await scandir(process.cwd());
-  const runners = [];
-
-  // Start N runners
-  for(let i=0; i<4; i++) {
-    runners.push(updateFile(files.shift()));
-  }
-
-  // Run through files
-  while(files.length) {
-    await runners.shift();
-    runners.push(updateFile(files.shift()));
-  }
-
-  // Await remaining runners
-  while(runners.length) {
-    await runners.shift();
-  }
-
+  process.stdout.write('\n');
+  await walk(process.cwd(), updateFile);
+  process.stdout.write('\n');
 })();
