@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/finwo/global-file-sync/issues"
   },
+  "funding": {
+    "url": "https://github.com/sponsors/finwo"
+  },
   "homepage": "https://github.com/finwo/global-file-sync#readme"
 }
