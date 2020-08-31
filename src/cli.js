@@ -64,13 +64,14 @@ if (argv.init) {
 
       // Fetch old data to compare
       const oldData = fs.readFileSync(filename).toString();
+      const fname   = filename.replace(process.cwd(), '.');
 
       // Update & notify user
       if (newData == oldData) {
-        process.stdout.write('Up-to-date : ' + path.basename(filename) + '\n');
+        process.stdout.write('Up-to-date : ' + fname + '\n');
       } else {
         await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
-        process.stdout.write('Updated    : ' + path.basename(filename) + '\n');
+        process.stdout.write('Updated    : ' + fname + '\n');
       }
 
     }
