@@ -20,7 +20,7 @@ const scandir = async (dir) => {
     }
     const entries = await new Promise((r,c) => fs.readdir(current, (e,d)=>e?c(e):r(d)));
     for(const entry of entries) {
-      if ('.' === entry.substr(0,1)) continue;
+      // if ('.' === entry.substr(0,1)) continue;
       if ('node_modules' === entry) continue;
       openset.push(path.resolve(current, entry));
     }
