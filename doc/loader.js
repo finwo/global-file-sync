@@ -1,5 +1,6 @@
 const fs   = require('fs');
 const path = require('path');
+const ini  = require('ini');
 
 const optional = (out,id,name) => {
   try {
@@ -11,9 +12,10 @@ const optional = (out,id,name) => {
 };
 
 module.exports = id => {
+  const {document} = ini.parse(fs.readFileSync(path.resolve(__dirname,id,'meta.ini'), 'utf-8'));
   const out = {
     id      : id,
-    name    : fs.readFileSync(path.resolve(__dirname,id,'name')).toString().split('\r\n').join('\n').split('\n').shift(),
+    name    : document.name,
     shebang : [],
     header  : [],
     content : [],

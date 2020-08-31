@@ -1,1 +1,1 @@
-| {{item.name}} | {{item.id}} | {{package.url}}/tree/master/doc/{{item.id}} |
+| {{document.name}} | {{document.id}} | {{package.url}}/tree/master/doc/{{document.id}} |

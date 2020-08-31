@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# e660cc6c-638a-4f9b-9527-ff96a19bbeed
 
 # Very simple templating system that replaces {{VAR}} by the value of $VAR.
 # Supports default values by writting {{VAR=value}} in the template.
