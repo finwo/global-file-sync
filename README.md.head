@@ -1,0 +1,47 @@
+# global-file-sync
+
+Update common files
+
+---
+
+This command updates all files synchronized with a uuid in it's store.
+
+## Install
+
+```
+npm install -g global-file-sync
+```
+
+## Usage
+
+```
+global-file-sync
+global-file-sync --init <filename>
+```
+
+### Update all files
+
+```
+global-file-sync
+```
+
+Update all files in the current (and sub) directories which have a registered
+header.
+
+### Initialize a synchronized file
+
+```
+global-file-sync --init <filename>
+```
+
+Create the given file in the current directory from the registered content.
+
+### Register a new file
+
+This command does not have support for a local registry yet. For now, create a
+PR in the repository to create a new registry entry.
+
+## Global registry
+
+| Name | ID | Source |
+| ---- | ---- | ------ |
