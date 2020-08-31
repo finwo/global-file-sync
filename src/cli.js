@@ -21,9 +21,6 @@ const walk = async (dir, handler) => {
     } catch(e) {
       continue;
     }
-    if (stat.isSymbolicLink()) {
-      continue;
-    }
     if (!stat.isDirectory()) {
       await handler(current);
       continue;
