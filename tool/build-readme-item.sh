@@ -3,4 +3,4 @@ set -ex
 TEMPLATE="${1}"
 TARGET="${2}"
 PAGEDIR="${3}"
-tool/template.sh -c config.ini -c "${PAGEDIR}/meta.ini" "${TEMPLATE}" >> "${TARGET}"
+tool/template.sh -c config.ini -c "${PAGEDIR}/meta.ini" -p partial "${TEMPLATE}" >> "${TARGET}"
