@@ -3,6 +3,7 @@
 const argv      = require('minimist')(process.argv.slice(2));
 const fs        = require('fs');
 const path      = require('path');
+const mkdirp    = require('mkdirp');
 const documents = require(path.resolve(__dirname,'..','doc'));
 
 // Recursive scandir
@@ -33,6 +34,7 @@ const scandir = async (dir) => {
 if (argv.init) {
   for(const document of documents) {
     if (document.name !== argv.init) continue;
+    mkdirp.sync(path.dirname(document.name));
     fs.writeFileSync(document.name, [].concat(document.shebang,document.header,document.content).join('\n'));
     process.stdout.write(argv.init + ' written\n');
     process.exit(0);
