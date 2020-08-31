@@ -42,9 +42,9 @@ if (argv.init) {
 }
 
 (async () => {
-  const files     = await scandir(process.cwd());
+  const files = await scandir(process.cwd());
 
-  await Promise.all(files.map(async filename => {
+  for(const filename of files) {
     const stat = await new Promise((r,c) => fs.stat(filename,(e,d)=>e?c(e):r(d)));
     const data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
     for(const document of documents) {
@@ -75,5 +75,5 @@ if (argv.init) {
       }
 
     }
-  }));
+  }
 })();
