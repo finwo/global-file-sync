@@ -12,15 +12,25 @@ const scandir = async (dir) => {
   const closedset = [];
   const openset   = [dir];
   while(openset.length) {
+    let stat;
+    let entries;
     const current = openset.shift();
     if (~closedset.indexOf(current)) continue;
     closedset.push(current);
-    const stat = await new Promise((r,c) => fs.stat(current, (e,d)=>e?c(e):r(d)));
+    try {
+      stat = await new Promise((r,c) => fs.stat(current, (e,d)=>e?c(e):r(d)));
+    } catch(e) {
+      continue;
+    }
     if (!stat.isDirectory()) {
       files.push(current);
       continue;
     }
-    const entries = await new Promise((r,c) => fs.readdir(current, (e,d)=>e?c(e):r(d)));
+    try {
+      entries = await new Promise((r,c) => fs.readdir(current, (e,d)=>e?c(e):r(d)));
+    } catch(e) {
+      continue;
+    }
     for(const entry of entries) {
       // if ('.' === entry.substr(0,1)) continue;
       if ('node_modules' === entry) continue;
