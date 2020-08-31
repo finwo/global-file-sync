@@ -41,39 +41,58 @@ if (argv.init) {
   process.exit(1);
 }
 
-(async () => {
-  const files = await scandir(process.cwd());
+const updateFile = async filename => {
+  if (!filename) return;
+  const stat = await new Promise((r,c) => fs.stat(filename,(e,d)=>e?c(e):r(d)));
+  const data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
+  for(const document of documents) {
+    if (!document.match.length) continue;
 
-  for(const filename of files) {
-    const stat = await new Promise((r,c) => fs.stat(filename,(e,d)=>e?c(e):r(d)));
-    const data = await new Promise((r,c) => fs.readFile(filename,(e,d)=>e?c(e):r(d.toString().split('\r\n').join('\n').split('\n'))));
-    for(const document of documents) {
-      if (!document.match.length) continue;
-
-      // Check if the file is tracked
-      let i;
-      for(i=0;i<document.match.length;i++) {
-        if (data[i] !== document.match[i]) break;
-      }
-      if (i !== document.match.length) {
-        continue;
-      }
-
-      // Generate new content
-      const newData = [].concat(document.shebang, document.header, document.content).join('\n');
-
-      // Fetch old data to compare
-      const oldData = fs.readFileSync(filename).toString();
-      const fname   = filename.replace(process.cwd(), '.');
-
-      // Update & notify user
-      if (newData == oldData) {
-        process.stdout.write('Up-to-date : ' + fname + '\n');
-      } else {
-        await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
-        process.stdout.write('Updated    : ' + fname + '\n');
-      }
-
+    // Check if the file is tracked
+    let i;
+    for(i=0;i<document.match.length;i++) {
+      if (data[i] !== document.match[i]) break;
     }
+    if (i !== document.match.length) {
+      continue;
+    }
+
+    // Generate new content
+    const newData = [].concat(document.shebang, document.header, document.content).join('\n');
+
+    // Fetch old data to compare
+    const oldData = fs.readFileSync(filename).toString();
+    const fname   = filename.replace(process.cwd(), '.');
+
+    // Update & notify user
+    if (newData == oldData) {
+      process.stdout.write('Up-to-date : ' + fname + '\n');
+    } else {
+      await new Promise((r,c) => fs.writeFile(filename, newData, (e,d)=>e?c(e):r(d)));
+      process.stdout.write('Updated    : ' + fname + '\n');
+    }
+
   }
+};
+
+(async () => {
+  const files   = await scandir(process.cwd());
+  const runners = [];
+
+  // Start N runners
+  for(let i=0; i<4; i++) {
+    runners.push(updateFile(files.shift()));
+  }
+
+  // Run through files
+  while(files.length) {
+    await runners.shift();
+    runners.push(updateFile(files.shift()));
+  }
+
+  // Await remaining runners
+  while(runners.length) {
+    await runners.shift();
+  }
+
 })();
