@@ -45,6 +45,7 @@ PR in the repository to create a new registry entry.
 
 | Name | ID | Source |
 | --- | --- | --- |
+| .github/workflows/nodejs.yml | 118b8825-e6de-4c10-8ec2-e3d5614c1e1f | https://github.com/finwo/global-file-sync/tree/master/doc/118b8825-e6de-4c10-8ec2-e3d5614c1e1f |
 | .editorconfig | 2d0e4a3f-ac19-430c-bf1b-46c68651ce21 | https://github.com/finwo/global-file-sync/tree/master/doc/2d0e4a3f-ac19-430c-bf1b-46c68651ce21 |
 | tool/ini.sh | c90839f9-835f-4f11-b6cd-86d17220195d | https://github.com/finwo/global-file-sync/tree/master/doc/c90839f9-835f-4f11-b6cd-86d17220195d |
 | tool/template.sh | e660cc6c-638a-4f9b-9527-ff96a19bbeed | https://github.com/finwo/global-file-sync/tree/master/doc/e660cc6c-638a-4f9b-9527-ff96a19bbeed |
