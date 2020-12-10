@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-const argv      = require('minimist')(process.argv.slice(2));
-const fs        = require('fs');
-const path      = require('path');
-const mkdirp    = require('mkdirp');
-const documents = require(path.resolve(__dirname,'..','doc'));
+const argv       = require('minimist')(process.argv.slice(2));
+const fs         = require('fs');
+const path       = require('path');
+const mkdirp     = require('mkdirp');
+const documents  = require(path.resolve(__dirname,'..','doc'));
+const threads    = [];
+const maxthreads = 8;
 
 // Calls handler for each file in directory
 const walk = async (dir, handler) => {
@@ -22,7 +24,8 @@ const walk = async (dir, handler) => {
       continue;
     }
     if (!stat.isDirectory()) {
-      await handler(current);
+      threads.push(handler(current));
+      if (threads.length >= maxthreads) await threads.shift();
       continue;
     }
     try {
@@ -111,5 +114,6 @@ const updateFile = async filename => {
 (async () => {
   process.stdout.write('\n');
   await walk(process.cwd(), updateFile);
+  await Promise.all(threads);
   process.stdout.write('\n');
 })();
