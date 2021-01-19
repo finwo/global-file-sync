@@ -8,6 +8,21 @@ const documents  = require(path.resolve(__dirname,'..','doc'));
 const threads    = [];
 const maxthreads = 8;
 
+// Handle help
+if (argv.help) {
+  switch(argv.help) {
+    // // Specific topic
+    // case 'init':
+    //   // Do stuff
+    //   break;
+
+    // Default help
+    default:
+      console.log('HELP');
+      process.exit(0);
+  }
+}
+
 // Calls handler for each file in directory
 const walk = async (dir, handler) => {
   const closedset = [];
