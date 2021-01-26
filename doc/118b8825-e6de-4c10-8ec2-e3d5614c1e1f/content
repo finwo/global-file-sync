@@ -21,6 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: curl -L https://raw.githubusercontent.com/pnpm/self-installer/master/install.js | node
+    - run: pnpm install -g node-gyp
     - run: pnpm install
     - run: pnpm run build --if-present
     - run: pnpm test
@@ -38,6 +39,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: curl -L https://raw.githubusercontent.com/pnpm/self-installer/master/install.js | node
+      - run: pnpm install -g node-gyp
       - run: pnpm install
       - run: pnpm run build --if-present
       - run: if [ $(pnpm view $(node -p "require('./package.json').name") version) != $(node -p "require('./package.json').version") ]; then pnpm publish ; fi
