@@ -135,5 +135,5 @@ const updateFile = async filename => {
   process.stdout.write('\n');
   await walk(process.cwd(), updateFile);
   await Promise.all(threads);
-  process.stdout.write('\n');
+  process.stdout.write("\x1b[K\n");
 })();
