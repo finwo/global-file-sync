@@ -8,19 +8,24 @@ const documents  = require(path.resolve(__dirname,'..','doc'));
 const threads    = [];
 const maxthreads = 8;
 
+function usage(topic = null) {
+  switch(topic) {
+    default:
+      process.stdout.write('\n');
+      process.stdout.write('Usage: global-file-sync [options]\n');
+      process.stdout.write('\n');
+      process.stdout.write('options:\n');
+      process.stdout.write('   --init <file>    Initialize file by name\n');
+      process.stdout.write('   --help [topic]   Show generic help or help about specified topic\n');
+      process.stdout.write('\n');
+      break;
+  }
+  return 0;
+}
+
 // Handle help
 if (argv.help) {
-  switch(argv.help) {
-    // // Specific topic
-    // case 'init':
-    //   // Do stuff
-    //   break;
-
-    // Default help
-    default:
-      console.log('HELP');
-      process.exit(0);
-  }
+  process.exit(usage(argv.help));
 }
 
 // Calls handler for each file in directory
