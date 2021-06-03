@@ -95,7 +95,8 @@ for templatefile in "${TEMPLATES[@]}"; do
   done
 
   # Output the result
-  echo -e "$CONTENT"
+  echo -e "${CONTENT//"\\"/"\\\\"}"
+
 done
 
 
