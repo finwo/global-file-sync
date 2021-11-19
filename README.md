@@ -47,6 +47,7 @@ PR in the repository to create a new registry entry.
 | --- | --- | --- |
 | .github/workflows/nodejs.yml | 118b8825-e6de-4c10-8ec2-e3d5614c1e1f | https://github.com/finwo/global-file-sync/tree/master/doc/118b8825-e6de-4c10-8ec2-e3d5614c1e1f |
 | LICENSE.MIT.md | 22d8aeaa-e0ac-421b-8b9f-b8127ff89e8b | https://github.com/finwo/global-file-sync/tree/master/doc/22d8aeaa-e0ac-421b-8b9f-b8127ff89e8b |
+| tool/retry.sh | 2c125e9c-4f6e-491c-9205-1a456d46dc8a | https://github.com/finwo/global-file-sync/tree/master/doc/2c125e9c-4f6e-491c-9205-1a456d46dc8a |
 | .editorconfig | 2d0e4a3f-ac19-430c-bf1b-46c68651ce21 | https://github.com/finwo/global-file-sync/tree/master/doc/2d0e4a3f-ac19-430c-bf1b-46c68651ce21 |
 | CODE_OF_CONDUCT.md | 46b43825-f791-485e-9445-415ee7bbbf2d | https://github.com/finwo/global-file-sync/tree/master/doc/46b43825-f791-485e-9445-415ee7bbbf2d |
 | hooks/post-receive | 6e7e0fe9-7708-49c3-a476-50d1507f51f2 | https://github.com/finwo/global-file-sync/tree/master/doc/6e7e0fe9-7708-49c3-a476-50d1507f51f2 |
